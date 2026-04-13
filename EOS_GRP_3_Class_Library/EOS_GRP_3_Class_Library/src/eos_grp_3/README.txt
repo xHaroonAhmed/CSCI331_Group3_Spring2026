@@ -7,10 +7,10 @@ Course: CSCI331 - Database Class
 ========================================================
 OVERVIEW
 ========================================================
-EOS_GRP_3_Class_Library is a reusable Java JDBC class 
-library built using the Microsoft SQL Server JDBC Driver.
+EOS_GRP_3_Class_Library is a JDBC class 
+library built using Microsoft SQL Server JDBC Driver.
 It connects to the NorthWinds2024Student database and 
-provides a clean, structured interface for performing 
+provides a  interface for performing 
 database operations using the Abstract Factory design 
 pattern.
 
@@ -20,12 +20,6 @@ the remainder of the semester.
 ========================================================
 DESIGN PATTERN
 ========================================================
-This library implements the Abstract Factory Pattern.
-
-The Abstract Factory Pattern provides a way to 
-encapsulate a group of individual factories that have 
-a common theme without specifying their concrete 
-classes.
 
 In this library:
 - IDataSource         = Abstract factory interface
@@ -70,7 +64,7 @@ REQUIREMENTS
 - Eclipse IDE
 - Microsoft SQL Server (running on port 14001)
 - NorthWinds2024Student database
-- mssql-jdbc-12.x.x.jar (included in lib/ folder)
+- mssql-jdbc-13.4.0.jre11.jar (included in lib/ folder)
 
 ========================================================
 DATABASE CONNECTION
@@ -89,9 +83,9 @@ trustServerCertificate=true
 ========================================================
 STORED PROCEDURES
 ========================================================
-The following stored procedures must be created in the
+The stored procedures must be created in the
 NorthWinds2024Student database before running the 
-library. Run these scripts in SSMS:
+library. Run these scripts:
 
 -- Employee by ID
 CREATE OR ALTER PROCEDURE 
@@ -153,7 +147,7 @@ OrderRepository
 ECLIPSE SETUP INSTRUCTIONS
 ========================================================
 1. Clone the repository:
-   https://github.com/YourUsername/EOS_GRP_3_Class_Library
+   https://github.com/xHaroonAhmed/CSCI331_Group3_Spring2026/tree/main/EOS_GRP_3_Class_Library
 
 2. In Eclipse:
    File -> Import -> Git -> Projects from Git
@@ -161,7 +155,7 @@ ECLIPSE SETUP INSTRUCTIONS
 
 3. Add the MSSQL JDBC Driver:
    Right-click project -> Build Path -> Add External JARs
-   Select mssql-jdbc-12.x.x.jar from the lib/ folder
+   Select mssql-jdbc-13.4.0.jre11.jar from the lib/ folder
 
 4. Update module-info.java if needed:
    module EOS_GRP_3_Class_Library {
@@ -206,48 +200,24 @@ Order#: 10248 | CustId: 85 | Date: 2020-07-04
 ========== Order ID 10248 ==========
 Order#: 10248 | CustId: 85 | Date: 2020-07-04
 
-========================================================
-TROUBLESHOOTING
-========================================================
-ERROR: No suitable driver found
-  -> Make sure mssql-jdbc jar is under Classpath
-     (not Modulepath) in Build Path settings
-  -> Verify module-info.java has requires java.sql;
 
-ERROR: Could not find stored procedure
-  -> Run the stored procedure scripts in SSMS first
-  -> Verify using:
-     SELECT name FROM sys.procedures
-     WHERE name IN (
-         'usp_GetEmployeeById',
-         'usp_GetCustomerById',
-         'usp_GetOrderById'
-     );
-
-ERROR: String or binary data would be truncated
-  -> Check column name and length in SSMS:
-     SELECT COLUMN_NAME, CHARACTER_MAXIMUM_LENGTH
-     FROM INFORMATION_SCHEMA.COLUMNS
-     WHERE TABLE_NAME = 'Employee'
-     AND TABLE_SCHEMA = 'HumanResources';
-
-ERROR: Unresolved compilation problem
-  -> Check package name matches folder name exactly
-  -> Should be eos_grp_3 (not eops_grp_3)
-  -> Use Refactor -> Rename in Eclipse to fix
 
 ========================================================
 GROUP MEMBERS
 ========================================================
 Group: EOS_grp_3
 
-- [Member 1 Name] - Role
-- [Member 2 Name] - Role
-- [Member 3 Name] - Role
-- [Member 4 Name] - Role
-- [Member 5 Name] - Role
+- [Member 1 Ahmed Haroon] - Role
+- [Member 2 Alhubaishi Ameen] - Role
+- [Member 3 Awad Mohamed] - Role
+- [Member 4 Cange Ralph] - Role
+- [Member 5 Gao, Zhenkai] - Role
+- [Member 6 Islam, Kazi] - Role
+- [Member 7 Karim, Azm] - Role
+- [Member 8 Roberts, Nicholas] - Role
 
-Project Manager: [Name] (submits on behalf of group)
+
+Project Manager: [Ralph Cange] (submits on behalf of group)
 
 ========================================================
 RESOURCES
@@ -265,10 +235,4 @@ RESOURCES
 - Design Patterns (Gang of Four):
   https://en.wikipedia.org/wiki/Design_Patterns
 
-========================================================
-LICENSE
-========================================================
-This project was developed for educational purposes
-as part of CSCI331 - Database Class.
-EOS_grp_3 - All Rights Reserved.
-========================================================
+
