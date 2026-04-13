@@ -51,13 +51,13 @@
 
 | Name | GitHub |
 |------|--------|
-| **Haroon Ahmed** | [@xHaroonAhmed](https://github.com/xHaroonAhmed) |
 | **Mohamed Awad** | — |
-| **Ralph Cange** | [@rcange-14](https://github.com/rcange-14) |
 | **Zhenkai Gao** | — |
 | **Kazi Islam** | — |
 | **Azm Karim** | — |
 | **Nicholas Roberts** | — |
+| **Haroon Ahmed** | [@xHaroonAhmed](https://github.com/xHaroonAhmed) |
+| **Ralph Cange** | [@rcange-14](https://github.com/rcange-14) |
 
 ---
 
