@@ -168,41 +168,7 @@ ECLIPSE SETUP INSTRUCTIONS
 
 6. Run Driver.java to test all connections
 
-========================================================
-EXPECTED OUTPUT
-========================================================
-[EOS_GRP_3] MSSQL Driver loaded successfully.
-[EOS_GRP_3] Connection established successfully.
 
-========== All Employees ==========
-1 - Davolio, Nancy
-2 - Fuller, Andrew
-...
-
-========== Employee ID 9 ==========
-9 - Dodsworth, Anne
-
-========== Update Employee 9 Country ==========
-Rows affected: 1
-
-========== All Customers ==========
-1 - Alfreds Futterkiste | Germany
-2 - Ana Trujillo | Mexico
-...
-
-========== Customer ID 5 ==========
-5 - Berglunds snabbkop | Sweden
-
-========== All Orders ==========
-Order#: 10248 | CustId: 85 | Date: 2020-07-04
-...
-
-========== Order ID 10248 ==========
-Order#: 10248 | CustId: 85 | Date: 2020-07-04
-
-
-
-========================================================
 GROUP MEMBERS
 ========================================================
 Group: EOS_grp_3
