@@ -53,7 +53,7 @@
 |------|--------|
 | **Mohamed Awad** | — |
 | **Zhenkai Gao** | — |
-| **Kazi Islam** | — |
+| **Kazi Islam** | [@kaziislam11](https://github.com/kaziislam11) |
 | **Azm Karim** | — |
 | **Nicholas Roberts** | — |
 | **Haroon Ahmed** | [@xHaroonAhmed](https://github.com/xHaroonAhmed) |
