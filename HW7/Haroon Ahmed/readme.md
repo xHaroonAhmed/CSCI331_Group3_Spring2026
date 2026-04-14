@@ -14,6 +14,8 @@
 
 </div>
 
+## Presentation: https://youtu.be/rckuyVQNf7E
+
 
 ## 🎯 Assignment Overview
 
@@ -22,6 +24,7 @@ This assignment focused on **Chapter 8: Data Modification** from *T-SQL Fundamen
 The deliverable is a **SQL Notebook (`.ipynb`)** designed for walkthrough presentation in **Azure Data Studio**. Each cell pair contains a business proposition (Markdown) followed by its query solution (SQL code cell).
 
 ---
+
 
 ## 📚 Concepts Learned
 
