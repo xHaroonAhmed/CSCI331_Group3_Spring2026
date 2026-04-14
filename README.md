@@ -52,7 +52,7 @@
 | Name | GitHub |
 |------|--------|
 | **Mohamed Awad** | — |
-| **Zhenkai Gao** | — |
+| **Zhenkai Gao** | [@hgzmw](https://github.com/hgzmw) |
 | **Kazi Islam** | [@kaziislam11](https://github.com/kaziislam11) |
 | **Azm Karim** | [@Azmk1](https://github.com/Azmk1) |
 | **Nicholas Roberts** | — |
