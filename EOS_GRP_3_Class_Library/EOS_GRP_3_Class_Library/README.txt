@@ -3,7 +3,7 @@ EOS_GRP_3_Class_Library
 Java Database Connectivity (JDBC) Class Library
 Group: EOS_grp_3
 Course: CSCI331 - Database Class
-
+Presentation : https://youtu.be/H3RruNm8ErU
 ========================================================
 OVERVIEW
 ========================================================
