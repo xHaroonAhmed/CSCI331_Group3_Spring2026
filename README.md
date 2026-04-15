@@ -51,7 +51,7 @@
 
 | Name | GitHub |
 |------|--------|
-| **Mohamed Awad** | — |
+| **Mohamed Awad** | [@Mosmoove](https://github.com/Mosmoove) |
 | **Zhenkai Gao** | [@hgzmw](https://github.com/hgzmw) |
 | **Kazi Islam** | [@kaziislam11](https://github.com/kaziislam11) |
 | **Azm Karim** | [@Azmk1](https://github.com/Azmk1) |
