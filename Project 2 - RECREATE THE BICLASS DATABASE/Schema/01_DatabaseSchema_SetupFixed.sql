@@ -1,0 +1,566 @@
+USE BIClass;
+GO
+
+-- ============================================================
+-- 01_DatabaseSchema_Setup.sql
+-- ============================================================
+
+
+-- ============================================================
+-- SECTION 1: Drop all FK constraints that reference
+--            DbSecurity.UserAuthorization (child -> parent)
+--            Must happen BEFORE dropping UserAuthorization
+-- ============================================================
+
+-- WorkflowSteps -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_WorkflowSteps_UserAuthorization')
+    ALTER TABLE [Process].[WorkflowSteps]
+        DROP CONSTRAINT [FK_WorkflowSteps_UserAuthorization];
+GO
+
+-- DimProduct -> DimProductSubcategory (grandchild first)
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimProduct_DimProductSubcategory')
+    ALTER TABLE [CH01-01-Dimension].[DimProduct]
+        DROP CONSTRAINT [FK_DimProduct_DimProductSubcategory];
+GO
+
+-- DimProductSubcategory -> DimProductCategory
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimProductSubcategory_DimProductCategory')
+    ALTER TABLE [CH01-01-Dimension].[DimProductSubcategory]
+        DROP CONSTRAINT [FK_DimProductSubcategory_DimProductCategory];
+GO
+
+-- DimProductSubcategory -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimProductSubcategory_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimProductSubcategory]
+        DROP CONSTRAINT [FK_DimProductSubcategory_UserAuthorization];
+GO
+
+-- DimProductCategory -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimProductCategory_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimProductCategory]
+        DROP CONSTRAINT [FK_DimProductCategory_UserAuthorization];
+GO
+
+-- DimCustomer -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimCustomer_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimCustomer]
+        DROP CONSTRAINT [FK_DimCustomer_UserAuthorization];
+GO
+
+-- DimGender -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimGender_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimGender]
+        DROP CONSTRAINT [FK_DimGender_UserAuthorization];
+GO
+
+-- DimMaritalStatus -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimMaritalStatus_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimMaritalStatus]
+        DROP CONSTRAINT [FK_DimMaritalStatus_UserAuthorization];
+GO
+
+-- DimOccupation -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimOccupation_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimOccupation]
+        DROP CONSTRAINT [FK_DimOccupation_UserAuthorization];
+GO
+
+-- DimOrderDate -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimOrderDate_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimOrderDate]
+        DROP CONSTRAINT [FK_DimOrderDate_UserAuthorization];
+GO
+
+-- DimProduct -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimProduct_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimProduct]
+        DROP CONSTRAINT [FK_DimProduct_UserAuthorization];
+GO
+
+-- DimTerritory -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_DimTerritory_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[DimTerritory]
+        DROP CONSTRAINT [FK_DimTerritory_UserAuthorization];
+GO
+
+-- SalesManagers -> UserAuthorization
+IF EXISTS (SELECT 1 FROM sys.foreign_keys WHERE name = 'FK_SalesManagers_UserAuthorization')
+    ALTER TABLE [CH01-01-Dimension].[SalesManagers]
+        DROP CONSTRAINT [FK_SalesManagers_UserAuthorization];
+GO
+
+
+-- ============================================================
+-- SECTION 2: Drop and recreate new tables (child -> parent)
+-- ============================================================
+
+DROP TABLE IF EXISTS [CH01-01-Dimension].[DimProductSubcategory];
+GO
+DROP TABLE IF EXISTS [CH01-01-Dimension].[DimProductCategory];
+GO
+DROP TABLE IF EXISTS [Process].[WorkflowSteps];
+GO
+DROP TABLE IF EXISTS [DbSecurity].[UserAuthorization];
+GO
+
+
+-- ============================================================
+-- SECTION 3: Create schemas
+-- ============================================================
+
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'DbSecurity')
+    EXEC('CREATE SCHEMA DbSecurity');
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'Process')
+    EXEC('CREATE SCHEMA Process');
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'PkSequence')
+    EXEC('CREATE SCHEMA PkSequence');
+GO
+
+
+-- ============================================================
+-- SECTION 4: Create all SEQUENCE objects
+--            Convention: PkSequence.TableNameSequenceObject
+-- ============================================================
+
+DROP SEQUENCE IF EXISTS PkSequence.DimCustomerSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimCustomerSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimGenderSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimGenderSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimMaritalStatusSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimMaritalStatusSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimOccupationSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimOccupationSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimOrderDateSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimOrderDateSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimProductSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimProductSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimProductCategorySequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimProductCategorySequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimProductSubcategorySequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimProductSubcategorySequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.DimTerritorySequenceObject;
+GO
+CREATE SEQUENCE PkSequence.DimTerritorySequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.SalesManagersSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.SalesManagersSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.FactDataSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.FactDataSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+DROP SEQUENCE IF EXISTS PkSequence.WorkflowStepsSequenceObject;
+GO
+CREATE SEQUENCE PkSequence.WorkflowStepsSequenceObject
+    AS INT START WITH 1 INCREMENT BY 1 MINVALUE 1 NO MAXVALUE NO CYCLE CACHE 10;
+GO
+
+
+-- ============================================================
+-- SECTION 5: Create DbSecurity.UserAuthorization
+--            Must exist BEFORE any table that FKs to it
+-- ============================================================
+
+CREATE TABLE DbSecurity.UserAuthorization
+(
+    UserAuthorizationKey    INT             NOT NULL PRIMARY KEY,
+    ClassTime               NCHAR(5)        NULL DEFAULT ('9:15'),
+    IndividualProject       NVARCHAR(60)    NULL DEFAULT ('PROJECT 2 RECREATE THE BICLASS DATABASE STAR SCHEMA'),
+    GroupMemberLastName     NVARCHAR(35)    NOT NULL,
+    GroupMemberFirstName    NVARCHAR(25)    NOT NULL,
+    GroupName               NVARCHAR(20)    NOT NULL,
+    DateAdded               DATETIME2(7)    NULL DEFAULT SYSDATETIME()
+);
+GO
+
+-- *** REPLACE with your real team member names ***
+INSERT INTO DbSecurity.UserAuthorization
+    (UserAuthorizationKey, GroupMemberLastName, GroupMemberFirstName, GroupName)
+VALUES
+    (1, 'LastName1', 'FirstName1', 'GroupName'),
+    (2, 'LastName2', 'FirstName2', 'GroupName'),
+    (3, 'LastName3', 'FirstName3', 'GroupName'),
+    (4, 'LastName4', 'FirstName4', 'GroupName'),
+    (5, 'LastName5', 'FirstName5', 'GroupName'),
+    (6, 'LastName6', 'FirstName6', 'GroupName'),
+    (7, 'LastName7', 'FirstName7', 'GroupName');
+GO
+
+
+-- ============================================================
+-- SECTION 6: Create Process.WorkflowSteps
+-- ============================================================
+
+CREATE TABLE Process.WorkflowSteps
+(
+    WorkFlowStepKey             INT             NOT NULL
+        CONSTRAINT [DF_WorkflowSteps_WorkFlowStepKey]
+            DEFAULT (NEXT VALUE FOR PkSequence.WorkflowStepsSequenceObject)
+        CONSTRAINT [PK_WorkflowSteps] PRIMARY KEY,
+    WorkFlowStepDescription     NVARCHAR(100)   NOT NULL,
+    WorkFlowStepTableRowCount   INT             NULL DEFAULT (0),
+    StartingDateTime            DATETIME2(7)    NULL DEFAULT SYSDATETIME(),
+    EndingDateTime              DATETIME2(7)    NULL DEFAULT SYSDATETIME(),
+    ClassTime                   CHAR(5)         NULL DEFAULT ('9:15'),
+    UserAuthorizationKey        INT             NOT NULL,
+
+    CONSTRAINT [FK_WorkflowSteps_UserAuthorization]
+        FOREIGN KEY (UserAuthorizationKey)
+        REFERENCES DbSecurity.UserAuthorization(UserAuthorizationKey)
+);
+GO
+
+
+-- ============================================================
+-- SECTION 7: Create new dimension tables
+--            DimProductCategory (parent) before
+--            DimProductSubcategory (child)
+-- ============================================================
+
+CREATE TABLE [CH01-01-Dimension].[DimProductCategory]
+(
+    ProductCategoryKey      INT             NOT NULL
+        CONSTRAINT [DF_DimProductCategory_ProductCategoryKey]
+            DEFAULT (NEXT VALUE FOR PkSequence.DimProductCategorySequenceObject)
+        CONSTRAINT [PK_DimProductCategory] PRIMARY KEY,
+    ProductCategoryName     NVARCHAR(50)    NOT NULL,
+    UserAuthorizationKey    INT             NOT NULL DEFAULT 1,
+    DateAdded               DATETIME2(7)    NULL DEFAULT SYSDATETIME(),
+    DateOfLastUpdate        DATETIME2(7)    NULL DEFAULT SYSDATETIME(),
+
+    CONSTRAINT [FK_DimProductCategory_UserAuthorization]
+        FOREIGN KEY (UserAuthorizationKey)
+        REFERENCES DbSecurity.UserAuthorization(UserAuthorizationKey)
+);
+GO
+
+CREATE TABLE [CH01-01-Dimension].[DimProductSubcategory]
+(
+    ProductSubcategoryKey   INT             NOT NULL
+        CONSTRAINT [DF_DimProductSubcategory_ProductSubcategoryKey]
+            DEFAULT (NEXT VALUE FOR PkSequence.DimProductSubcategorySequenceObject)
+        CONSTRAINT [PK_DimProductSubcategory] PRIMARY KEY,
+    ProductSubcategoryName  NVARCHAR(50)    NOT NULL,
+    ProductCategoryKey      INT             NOT NULL,
+    UserAuthorizationKey    INT             NOT NULL DEFAULT 1,
+    DateAdded               DATETIME2(7)    NULL DEFAULT SYSDATETIME(),
+    DateOfLastUpdate        DATETIME2(7)    NULL DEFAULT SYSDATETIME(),
+
+    CONSTRAINT [FK_DimProductSubcategory_DimProductCategory]
+        FOREIGN KEY (ProductCategoryKey)
+        REFERENCES [CH01-01-Dimension].[DimProductCategory](ProductCategoryKey),
+
+    CONSTRAINT [FK_DimProductSubcategory_UserAuthorization]
+        FOREIGN KEY (UserAuthorizationKey)
+        REFERENCES DbSecurity.UserAuthorization(UserAuthorizationKey)
+);
+GO
+
+
+-- ============================================================
+-- SECTION 8: Add ProductSubcategoryKey + FK to DimProduct
+-- ============================================================
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.columns
+    WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimProduct]')
+    AND name = 'ProductSubcategoryKey'
+)
+    ALTER TABLE [CH01-01-Dimension].[DimProduct]
+        ADD ProductSubcategoryKey INT NULL;
+GO
+
+IF NOT EXISTS (
+    SELECT 1 FROM sys.foreign_keys
+    WHERE name = 'FK_DimProduct_DimProductSubcategory'
+)
+    ALTER TABLE [CH01-01-Dimension].[DimProduct]
+        ADD CONSTRAINT [FK_DimProduct_DimProductSubcategory]
+            FOREIGN KEY (ProductSubcategoryKey)
+            REFERENCES [CH01-01-Dimension].[DimProductSubcategory](ProductSubcategoryKey);
+GO
+
+
+-- ============================================================
+-- SECTION 9: Add 3 audit columns to ALL existing tables
+--            that are missing them (idempotent checks)
+-- ============================================================
+
+-- Macro pattern: check exists -> ALTER ADD
+-- UserAuthorizationKey, DateAdded, DateOfLastUpdate
+
+-- >> DimCustomer
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimCustomer]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimCustomer] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimCustomer]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimCustomer] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimCustomer]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimCustomer] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> DimGender
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimGender]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimGender] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimGender]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimGender] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimGender]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimGender] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> DimMaritalStatus
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimMaritalStatus]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimMaritalStatus] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimMaritalStatus]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimMaritalStatus] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimMaritalStatus]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimMaritalStatus] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> DimOccupation
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimOccupation]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimOccupation] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimOccupation]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimOccupation] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimOccupation]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimOccupation] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> DimOrderDate
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimOrderDate]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimOrderDate] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimOrderDate]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimOrderDate] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimOrderDate]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimOrderDate] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> DimProduct
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimProduct]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimProduct] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimProduct]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimProduct] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimProduct]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimProduct] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> DimTerritory
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimTerritory]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[DimTerritory] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimTerritory]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[DimTerritory] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[DimTerritory]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[DimTerritory] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> SalesManagers
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[SalesManagers]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Dimension].[SalesManagers] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[SalesManagers]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Dimension].[SalesManagers] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Dimension].[SalesManagers]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Dimension].[SalesManagers] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+-- >> Fact table
+-- NOTE: Run this first to find your exact Fact table name:
+--       SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA LIKE '%Fact%'
+-- Then replace [CH01-01-Fact].[Data] below with the correct schema.table
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Fact].[Data]') AND name = 'UserAuthorizationKey')
+    ALTER TABLE [CH01-01-Fact].[Data] ADD UserAuthorizationKey INT NOT NULL DEFAULT 1;
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Fact].[Data]') AND name = 'DateAdded')
+    ALTER TABLE [CH01-01-Fact].[Data] ADD DateAdded DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.columns WHERE object_id = OBJECT_ID(N'[CH01-01-Fact].[Data]') AND name = 'DateOfLastUpdate')
+    ALTER TABLE [CH01-01-Fact].[Data] ADD DateOfLastUpdate DATETIME2(7) NULL DEFAULT SYSDATETIME();
+GO
+
+
+-- ============================================================
+-- SECTION 10: usp_TrackWorkFlows
+-- ============================================================
+
+CREATE OR ALTER PROCEDURE [Process].[usp_TrackWorkFlows]
+    @StartTime                  DATETIME2,
+    @WorkFlowDescription        NVARCHAR(100),
+    @WorkFlowStepTableRowCount  INT,
+    @UserAuthorizationKey       INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Process.WorkflowSteps
+    (
+        WorkFlowStepDescription,
+        WorkFlowStepTableRowCount,
+        StartingDateTime,
+        EndingDateTime,
+        ClassTime,
+        UserAuthorizationKey
+    )
+    VALUES
+    (
+        @WorkFlowDescription,
+        @WorkFlowStepTableRowCount,
+        @StartTime,
+        SYSDATETIME(),
+        '9:15',
+        @UserAuthorizationKey
+    );
+END
+GO
+
+
+-- ============================================================
+-- SECTION 11: usp_ResetAllSequences
+--             Call before any full reload
+-- ============================================================
+
+CREATE OR ALTER PROCEDURE [Process].[usp_ResetAllSequences]
+AS
+BEGIN
+    ALTER SEQUENCE PkSequence.DimCustomerSequenceObject           RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimGenderSequenceObject             RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimMaritalStatusSequenceObject      RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimOccupationSequenceObject         RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimOrderDateSequenceObject          RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimProductSequenceObject            RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimProductCategorySequenceObject    RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimProductSubcategorySequenceObject RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.DimTerritorySequenceObject          RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.SalesManagersSequenceObject         RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.FactDataSequenceObject              RESTART WITH 1;
+    ALTER SEQUENCE PkSequence.WorkflowStepsSequenceObject         RESTART WITH 1;
+END
+GO
+
+
+-- ============================================================
+-- SECTION 12: usp_LoadStarSchema (master orchestrator)
+-- ============================================================
+
+CREATE OR ALTER PROCEDURE [Process].[usp_LoadStarSchema]
+    @TruncateData         BIT = 0,
+    @UserAuthorizationKey INT = 1
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @TruncateData = 1
+    BEGIN
+        -- Truncate child tables first (reverse FK order)
+        TRUNCATE TABLE [CH01-01-Fact].[Data];           -- fact first (references all dims)
+        TRUNCATE TABLE [CH01-01-Dimension].[DimProduct];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimProductSubcategory];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimProductCategory];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimCustomer];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimGender];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimMaritalStatus];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimOccupation];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimOrderDate];
+        TRUNCATE TABLE [CH01-01-Dimension].[DimTerritory];
+        TRUNCATE TABLE [CH01-01-Dimension].[SalesManagers];
+        -- NOTE: FileUpload.OriginallyLoadedData intentionally excluded
+
+        EXEC Process.usp_ResetAllSequences;
+    END
+
+    -- Load dimensions (parents before children)
+    EXEC [Process].[usp_LoadDimProductCategory]     @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimProductSubcategory]  @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimProduct]             @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimCustomer]            @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimGender]              @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimMaritalStatus]       @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimOccupation]          @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimOrderDate]           @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadDimTerritory]           @UserAuthorizationKey = @UserAuthorizationKey;
+    EXEC [Process].[usp_LoadSalesManagers]          @UserAuthorizationKey = @UserAuthorizationKey;
+    -- Load fact table last (after all dims are populated)
+    EXEC [Process].[usp_LoadFactData]               @UserAuthorizationKey = @UserAuthorizationKey;
+END
+GO
+
+
+-- ============================================================
+-- SECTION 13: Verification queries
+-- ============================================================
+
+SELECT 'UserAuthorization rows'  AS Check_Item, COUNT(*) AS Result FROM DbSecurity.UserAuthorization
+UNION ALL
+SELECT 'WorkflowSteps exists',    COUNT(*) FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA = 'Process'   AND TABLE_NAME = 'WorkflowSteps'
+UNION ALL
+SELECT 'Sequences in PkSequence', COUNT(*) FROM sys.sequences
+    WHERE schema_id = SCHEMA_ID('PkSequence')
+UNION ALL
+SELECT 'DimProductCategory exists', COUNT(*) FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA = 'CH01-01-Dimension' AND TABLE_NAME = 'DimProductCategory'
+UNION ALL
+SELECT 'DimProductSubcategory exists', COUNT(*) FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA = 'CH01-01-Dimension' AND TABLE_NAME = 'DimProductSubcategory';
+GO
+
+-- Run this to confirm your exact Fact table name if section 9 Fact block errored:
+SELECT TABLE_SCHEMA, TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA LIKE '%Fact%' OR TABLE_NAME LIKE '%Fact%' OR TABLE_NAME LIKE '%Data%';
+GO
