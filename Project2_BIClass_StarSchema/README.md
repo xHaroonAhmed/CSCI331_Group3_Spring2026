@@ -5,15 +5,15 @@
 
 ## Team Members
 
-| Person | Name | Role | Responsibilities |
-|---|---|---|---|
-| Person 1 | Andrew Laboy | Project Manager | Team coordination, critical path tracking, analysis queries, 12-min SSMS demo video |
-| Person 2 | Ralph Cange | Database Architect | Database restore, schemas, sequences, UserAuthorization, WorkflowSteps, new dimension tables, audit columns |
-| Person 3 | Haroon Ahmed | ETL Developer 1 | Load_DimCustomer, Load_DimGender, Load_DimMaritalStatus, Load_DimOccupation, Load_DimOrderDate |
-| Person 4 | Azm Karim | ETL Developer 2 | Load_DimProductCategory, Load_DimProductSubcategory, Load_DimProduct |
-| Person 5 | Mohamed Awad | ETL Developer 3 | Load_DimTerritory, Load_SalesManagers, Load_Data (Fact Table) |
-| Person 6 | Kazi Islam | Workflow Architect | usp_TrackWorkFlow, DropForeignKeys, TruncateStarSchema, AddForeignKeys, LoadStarSchemaData, usp_ShowWorkflowSteps |
-| Person 7 | Zhenkai Gao | JDBC Developer | Java JDBC application, JTable UI, database connection, stored procedure execution |
+| Person | Name | Role |
+|---|---|---|
+| Person 1 | Andrew Laboy | Project Manager |
+| Person 2 | Ralph Cange | Database Architect |
+| Person 3 | Haroon Ahmed | ETL Developer 1 |
+| Person 4 | Azm Karim | ETL Developer 2 |
+| Person 5 | Mohamed Awad | ETL Developer 3 |
+| Person 6 | Kazi Islam | Workflow Architect |
+| Person 7 | Zhenkai Gao | JDBC Developer |
 
 ---
 
@@ -81,11 +81,11 @@ This project recreates the BIClass Database Star Schema by loading data from `Fi
 |---|---|
 | `9_15 - Group 3 - Group Project 2.pptx` | Team PowerPoint presentation with voice annotations |
 
-### Videos (`/videos`)
-| File | Description | Length |
-|---|---|---|
-| `EOS_Group3_SSMS_SystemLifecycle.mp4` | Complete system lifecycle demo in VS Code | 12 min |
-| `EOS_Group3_JDBC_Application_Demo.mp4` | Java JDBC application demonstration | 8 min |
+### Videos
+| Video | Description | Length | Link |
+|---|---|---|---|
+| SSMS System Lifecycle Demo | Complete system lifecycle demo in VS Code | 12 min | [Watch on YouTube](PASTE_LINK_HERE) |
+| JDBC Application Demo | Java JDBC application demonstration | 8 min | [Watch on YouTube](PASTE_LINK_HERE) |
 
 ---
 
@@ -157,3 +157,4 @@ java -cp "out;lib\mssql-jdbc-13.4.0.jre11.jar" "-Djava.library.path=lib" jdbc.ui
 | 12 | LoadStarSchemaData (Master) | 0 | Kazi Islam |
 
 **Total: 80,095 rows loaded in ~4 seconds with 0 errors**
+
