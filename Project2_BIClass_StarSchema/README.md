@@ -60,11 +60,11 @@ This project recreates the BIClass Database Star Schema by loading data from `Fi
 | File | Description |
 |---|---|
 | `Person1_PM_AnalysisQueries.sql` | 12 business intelligence analysis queries |
-| `Person2_DatabaseSetup_Infrastructure_FIXED.sql` | Schemas, sequences, tables, audit columns, tracking procedures |
+| `Person2_DatabaseSetup_Infrastructure.sql` | Schemas, sequences, tables, audit columns, tracking procedures |
 | `Person3_DimensionLoaders_Basic.sql` | 5 dimension loader stored procedures |
-| `Person4_DimensionLoaders_ProductHierarchy_FIXED.sql` | 3 product hierarchy loader stored procedures |
+| `Person4_DimensionLoaders_ProductHierarchy.sql` | 3 product hierarchy loader stored procedures |
 | `Person5_Territory_SalesManagers_FactTable.sql` | Territory, SalesManagers, and Fact table loaders |
-| `Person6_MasterOrchestrator_ETL_FIXED.sql` | Master ETL orchestrator and workflow procedures |
+| `Person6_MasterOrchestrator_ETL.sql` | Master ETL orchestrator and workflow procedures |
 
 ### Java Files (`/src`)
 | File | Location | Description |
@@ -93,11 +93,11 @@ This project recreates the BIClass Database Star Schema by loading data from `Fi
 
 Run the SQL files **in this exact order** in SSMS or VS Code connected to BIClass:
 
-1. `Person2_DatabaseSetup_Infrastructure_FIXED.sql` — sets up everything
+1. `Person2_DatabaseSetup_Infrastructure.sql` — sets up everything
 2. `Person3_DimensionLoaders_Basic.sql` — basic dimension loaders
-3. `Person4_DimensionLoaders_ProductHierarchy_FIXED.sql` — product hierarchy loaders
+3. `Person4_DimensionLoaders_ProductHierarchy.sql` — product hierarchy loaders
 4. `Person5_Territory_SalesManagers_FactTable.sql` — territory, sales managers, fact table
-5. `Person6_MasterOrchestrator_ETL_FIXED.sql` — master orchestrator
+5. `Person6_MasterOrchestrator_ETL.sql` — master orchestrator
 
 Then run the ETL:
 ```sql
