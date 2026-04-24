@@ -84,8 +84,8 @@ This project recreates the BIClass Database Star Schema by loading data from `Fi
 ### Videos
 | Video | Description | Length | Link |
 |---|---|---|---|
-| SSMS System Lifecycle Demo | Complete system lifecycle demo in VS Code | 12 min | [Watch on YouTube](PASTE_LINK_HERE) |
-| JDBC Application Demo | Java JDBC application demonstration | 8 min | [Watch on YouTube](PASTE_LINK_HERE) |
+| SSMS System Lifecycle Demo | Complete system lifecycle demo in VS Code | 12 min | [Watch on YouTube](https://www.youtube.com/watch?v=9mQjlkuQHS0) |
+| JDBC Application Demo | Java JDBC application demonstration | 8 min | [Watch on YouTube](https://www.youtube.com/watch?v=dlJCDFBm0O8) |
 
 ---
 
